@@ -50,11 +50,16 @@ mkdir -p /data/src
 
 ### Create Volume
 ```shell
-docker volume create portainer_data
-docker run --restart=always \
+docker run \
+--restart=always \
 --name=portainer \
 -d \
 -p 9000:9000 \
 -v /var/run/docker.sock:/var/run/docker.sock \
--v /data/portainer:/data portainer/portainer
+-v /etc/letsencrypt/live/docker.thatguy.co.za/cert.pem:/certs/portainer.crt \
+-v /etc/letsencrypt/live/docker.thatguy.co.za/privkey.pem:/certs/portainer.key \
+-v /data/portainer:/data portainer/portainer \
+--ssl \
+--sslcert=/certs/portainer.crt \
+--sslkey=/certs/portainer.key
 ```
